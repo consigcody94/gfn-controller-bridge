@@ -1,0 +1,11 @@
+# Signal Bridge
+
+A design language for documenting an invisible transaction: the moment a signal that one system refuses to hear is carried, intact, into a room where it is finally understood. The work reads as a plate from a field manual for an imaginary discipline, the study of crossings, drawn by someone who has spent years watching packets move and knows exactly how much of that motion deserves ink.
+
+Space is graphite and quiet. The ground is a near-black that absorbs attention instead of demanding it, with a faint measured grid that suggests instrumentation rather than decoration. Forms sit far apart on purpose; the distance between them is the subject. Nothing crowds the edges. Every element is given the breathing room of a specimen pinned under glass, positioned once and never nudged again, the product of countless small refinements that leave no trace of themselves.
+
+Line is thin and certain. Objects are drawn as silhouettes with a single, even stroke, the way an engineer draws what they understand completely. Meaning travels along one horizontal axis, left to right, and is carried by repetition: small identical marks accumulate into a stream, ticks measure the interval, and one mark out of the many is lit so the eye finds the event inside the noise. The rhythm should feel counted, not scattered.
+
+Color is a single accent against restraint. A cool signal tone, somewhere between teal and phosphor, is reserved for the thing that is alive: the packet in flight, the state that finally reads true. Everything else is bone, ash and graphite. The accent is used so sparingly that its every appearance is a statement, calibrated with the patience of a printmaker mixing one ink.
+
+Typography whispers. Labels are set small in a monospaced hand, like reference markers on a schematic, and the title is a light geometric sans that sits low and steady, never louder than the drawing. Words anchor what the composition already shows and never explain it. The result must look meticulously crafted, labored over with painstaking attention by someone at the very top of their field, so that a viewer who knows the subject feels the crossing before reading a single label, and a viewer who does not simply sees a beautiful instrument.
