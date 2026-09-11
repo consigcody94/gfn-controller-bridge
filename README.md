@@ -87,3 +87,7 @@ node tools/test.mjs
 - Only the browser client benefits. For system-wide use (native apps, Steam) you need a hardware USB-host-to-HID
   bridge such as an RP2040 board running GP2040-CE.
 - Supported VID/PID pairs are listed at the top of `bridge_daemon.py`; other GIP pads usually work if added there.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
