@@ -7,6 +7,8 @@ import { spawn } from "node:child_process";
 import { mkdirSync } from "node:fs";
 const EXT = new URL("../extension", import.meta.url).pathname;
 const SCRATCH = new URL("./.out", import.meta.url).pathname; mkdirSync(SCRATCH, { recursive: true });
+const FAKE_DAEMON = new URL("./fake_daemon.py", import.meta.url).pathname;
+const EXT_VERSION = JSON.parse((await import("node:fs")).readFileSync(`${EXT}/manifest.json`, "utf8")).version;
 const EVT_HOOK = `window.__evts = []; for (const t of ["gamepadconnected","gamepaddisconnected"]) window.addEventListener(t, e => window.__evts.push({type:t, hasGamepad: !!e.gamepad, id: e.gamepad && e.gamepad.id, index: e.gamepad && e.gamepad.index, connected: e.gamepad && e.gamepad.connected, isEvent: e instanceof Event}));`;
 const results = [];
 const check = (name, ok, detail = "") => { results.push({ name, ok, detail }); console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? "  — " + detail : ""}`); };
@@ -39,7 +41,7 @@ async function newHookedPage(chrome, url, waitMs) {
     check("A7 GamepadEvent ctor rejects fake pads (why we use Event)", (await page.evaluate("(()=>{try{new GamepadEvent('gamepadconnected',{gamepad:{}});return 'accepted'}catch(e){return e.message}})()")).includes("convert value to 'Gamepad'"));
     check("A8 no errors from extension scripts", ourErrors(page).length === 0, ourErrors(page).join(" | ").slice(0, 300));
     const badgeText = await page.evaluate("(document.getElementById('gfn-bridge-badge')||{}).textContent || ''");
-    check("A8b badge confirms worker handshake (version shown, no stale-worker warning)", badgeText.includes("bridge v1.1.1") && !/not responding|mismatch/.test(badgeText), badgeText);
+    check("A8b badge confirms worker handshake (version shown, no stale-worker warning)", badgeText.includes(`bridge v${EXT_VERSION}`) && !/not responding|mismatch/.test(badgeText), badgeText);
     await page.screenshot(`${SCRATCH}/hardwaretester-live.png`);
     page.close();
 
@@ -56,7 +58,7 @@ async function newHookedPage(chrome, url, waitMs) {
 
 // ---------- Part B: scripted fake daemon on 8766 (button/axis propagation, disconnect/reconnect) ----------
 {
-  let fake = spawn("python3", [`${SCRATCH}/fake_daemon.py`, "8766"], { stdio: ["ignore", "inherit", "inherit"] });
+  let fake = spawn("python3", [FAKE_DAEMON, "8766"], { stdio: ["ignore", "inherit", "inherit"] });
   await sleep(800);
   const chrome = await launch({ ext: EXT, profile: `${SCRATCH}/profile-B`, port: 9334 });
   try {
@@ -106,7 +108,7 @@ async function newHookedPage(chrome, url, waitMs) {
     const text2 = await page.evaluate("document.body.innerText.replace(/\\s+/g,' ')");
     check("B10 page returns to connect prompt", text2.includes("Connect your gamepad"));
 
-    fake = spawn("python3", [`${SCRATCH}/fake_daemon.py`, "8766"], { stdio: ["ignore", "inherit", "inherit"] });
+    fake = spawn("python3", [FAKE_DAEMON, "8766"], { stdio: ["ignore", "inherit", "inherit"] });
     await sleep(4000);
     ev = JSON.parse(await page.evaluate("JSON.stringify(window.__evts)"));
     const padBack = JSON.parse(await page.evaluate(padSummary));
